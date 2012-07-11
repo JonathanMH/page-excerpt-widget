@@ -48,4 +48,4 @@ Not yet.
 First submitted version.
 
 == Suggestions welcome ==
-Since this is my first plugin and widget, suggestions, improvements and more are very welcome. I've also published the code on github, for easier discussion and improvement. https://github.com/JonathanMH/jmh-page-excerpt-widget
+Since this is my first plugin and widget, suggestions, improvements and more are very welcome. I've also published the code on github, for easier discussion and improvement. https://github.com/JonathanMH/page-excerpt-widget
