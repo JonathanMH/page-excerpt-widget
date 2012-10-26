@@ -36,9 +36,11 @@ function jmh_pew_output($page_id) {
 	// call trim function
 	$content = jmh_pew_trim($content,$trim_at);
 	$title = $page_data->post_title;
+   $featimg = get_the_post_thumbnail($page_id, 'medium');
 	$link = get_permalink($page_id);
 	$trimmed_page = array(
 		'title' => $page_data->post_title,
+      'featimg' => $featimg,
 		'content' => $content,
 		'link' => $link
 	);
@@ -70,6 +72,15 @@ else{
 //
 echo $after_title;
 
+$featimg = get_option('jmh_pew_featured_img');
+if($featimg == 'Yes'){
+	// display featured image
+   echo $trimmed_page['featimg'];
+}
+else {
+	// do nothing
+}
+
 echo '<p class="jmh_pew_content">'.$trimmed_page['content'].'</p>';
 
 if (get_option('jmh_pew_append_link') == 'Yes'){
@@ -89,5 +100,5 @@ echo $after_widget;
 	register_sidebar_widget('Page Excerpt Widget',
 	'jmh_pew_widget');
 	register_widget_control('Page Excerpt Widget',
-	'jmh_pew_widget_control', 300, 200 ); 
+	'jmh_pew_widget_control', 300, 200 );
 ?>
