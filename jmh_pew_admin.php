@@ -2,22 +2,26 @@
 	if($_POST['jmh_pew_hidden'] == 'Y') {
 		$jmh_pew_page_excerpt_length = $_POST['jmh_pew_page_excerpt_length'];
 		update_option('jmh_pew_page_excerpt_length', $jmh_pew_page_excerpt_length);
-		
+
 		$jmh_pew_page_id = $_POST['jmh_pew_page_id'];
 		update_option('jmh_pew_page_id', $jmh_pew_page_id);
-		
+
 		$jmh_pew_link_title = $_POST['jmh_pew_link_title'];
 		update_option('jmh_pew_link_title', $jmh_pew_link_title);
-		
+
+      $jmh_pew_featured_img = $_POST['jmh_pew_featured_img'];
+		update_option('jmh_pew_featured_img', $jmh_pew_featured_img);
+
 		$jmh_pew_append_link = $_POST['jmh_pew_append_link'];
 		update_option('jmh_pew_append_link', $jmh_pew_append_link);
-		
+
 		$jmh_pew_link_label = $_POST['jmh_pew_link_label'];
 		update_option('jmh_pew_link_label', $jmh_pew_link_label);
 	} else {
 		$jmh_pew_page_excerpt_length = get_option('jmh_pew_page_excerpt_length');
 		$jmh_pew_page_id = get_option('jmh_pew_page_id');
 		$jmh_pew_link_title = get_option('jmh_pew_link_title');
+      $jmh_pew_featured_img = get_option('jmh_pew_featured_img');
 		$jmh_pew_append_link = get_option('jmh_pew_append_link');
 		$jmh_pew_link_label = get_option('jmh_pew_link_label');
 	}
@@ -39,13 +43,13 @@
 						else {
 							$selected='';
 						}
-						echo '<option value="'.$page->ID.'"'.$selected.'>'.$page->post_title.'</option>';	
+						echo '<option value="'.$page->ID.'"'.$selected.'>'.$page->post_title.'</option>';
 					};
 				?>
 			</select>
 		</p>
 		<p>
-			<?php _e("Link page title to page: " ); 
+			<?php _e("Link page title to page: " );
 				if ($jmh_pew_link_title == 'Yes'){
 					$checked = 'checked="checked"';
 				}
@@ -54,6 +58,17 @@
 				}
 			?>
 			<input type="checkbox" name="jmh_pew_link_title" value="Yes" <?php echo $checked ?> />
+		</p>
+		<p>
+			<?php _e("Include featured image: " );
+				if ($jmh_pew_featured_img == 'Yes'){
+					$checked = 'checked="checked"';
+				}
+				else {
+					$checked = '';
+				}
+			?>
+			<input type="checkbox" name="jmh_pew_featured_img" value="Yes" <?php echo $checked ?> />
 		</p>
 		<p>
 			<?php _e("Append a &quot;Read more&quot; link: " );
