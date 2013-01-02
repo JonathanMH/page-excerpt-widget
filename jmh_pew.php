@@ -54,9 +54,13 @@ function jmh_pew_widget() {
 $page_id = get_option('jmh_pew_page_id');
 $trimmed_page = jmh_pew_output($page_id);
 //
-echo $before_widget;
+if (isset($before_widget)){
+	echo $before_widget;
+}
 //
-echo $before_title;
+if (isset($before_title)){
+	echo $before_title;
+}
 //
 $link_title = get_option('jmh_pew_link_title');
 if($link_title == 'Yes'){
@@ -68,7 +72,9 @@ else{
 	echo '<h1 class="jmh_pew_title">'.$trimmed_page['title'].'</h1>';
 }
 //
-echo $after_title;
+if (isset($after_title)){
+	echo $after_title;
+}
 
 echo '<p class="jmh_pew_content">'.$trimmed_page['content'].'</p>';
 
@@ -84,10 +90,37 @@ else {
 	// do nothing
 }
 //
-echo $after_widget;
+if (isset($after_widget)){
+	echo $after_widget;
 }
-	register_sidebar_widget('Page Excerpt Widget',
+}
+	wp_register_sidebar_widget( 1, 'Page Excerpt Widget',
 	'jmh_pew_widget');
-	register_widget_control('Page Excerpt Widget',
-	'jmh_pew_widget_control', 300, 200 ); 
+	wp_register_widget_control( 1, 'Page Excerpt Widget',
+	'jmh_pew_widget_control');
+/*
+add_action('init', 'jmh_pew_multi_register');
+function jmh_pew_multi_register() {
+ 
+	$prefix = 'page-excerpt-widget'; // $id prefix
+	$name = __('Page Excerpt Widget');
+	$widget_ops = array('classname' => 'widget_name_multi', 'description' => __('This is an example of a widget which you can add many times'));
+	$control_ops = array('width' => 200, 'height' => 200, 'id_base' => $prefix);
+ 
+	$options = get_option('widget_name_multi');
+	if(isset($options[0])) unset($options[0]);
+ 
+	if(!empty($options)){
+		foreach(array_keys($options) as $widget_number){
+			wp_register_sidebar_widget($prefix.'-'.$widget_number, $name, 'widget_name_multi', $widget_ops, array( 'number' => $widget_number ));
+			wp_register_widget_control($prefix.'-'.$widget_number, $name, 'widget_name_multi_control', $control_ops, array( 'number' => $widget_number ));
+		}
+	} else{
+		$options = array();
+		$widget_number = 1;
+		wp_register_sidebar_widget($prefix.'-'.$widget_number, $name, 'widget_name_multi', $widget_ops, array( 'number' => $widget_number ));
+		wp_register_widget_control($prefix.'-'.$widget_number, $name, 'widget_name_multi_control', $control_ops, array( 'number' => $widget_number ));
+	}
+}
+//*/
 ?>
