@@ -4,9 +4,143 @@
 	Plugin URI: http://jonathanmh.com/blog/117-wordpress-page-excerpt-widget
 	Description: Plugin for displaying a page excerpt in a widget area
 	Author: Jonathan M. Hethey
-	Version: 0.1
+	Version: 0.2
 	Author URI: http://jonathanmh.com
 */
+
+global $wp_version;
+if((float)$wp_version >= 2.8){
+class PageExcerptWidget extends WP_Widget {
+
+	/*
+	* construct
+	*/
+	
+	function PageExcerptWidget() {
+		parent::WP_Widget(
+			'PageExcerptWidget'
+			, 'Page Excerpt Widget'
+			, array(
+				'description' => 'Display Excerpt of Page in any Widget Area'
+			)
+		);
+	}
+	
+	function pew_trim($text, $length) {
+		// if the text is longer than the length it is supposed to be
+		if (strlen($text) > $length){
+			// trim to length
+			$text = substr($text, 0, $length);
+			// find last whitespace in string
+			$last_whitespace = strrpos($text, ' ');
+			// trim to last whitespace in string
+			$text = substr($text, 0, $last_whitespace);
+			// append dots
+			//$text .=' [...]';
+			return $text;
+		}
+		// if the text is shorter than the trim limit, pass it on
+		else {
+			return $text;
+		}
+	}
+	
+	function widget($args, $instance) {
+		extract($args, EXTR_SKIP);
+		echo $before_widget;
+		$page_data = get_page($instance['page_id']);
+		
+		
+		
+		
+		$title = $page_data->post_title;
+		if (!empty($title)) {
+			echo $before_title . $title . $after_title;
+		};
+		echo $this->pew_trim($page_data->post_content, 100);
+			
+		echo '<pre>';
+		print_r($page_data);
+		echo '</pre>';
+		echo $after_widget;
+		
+	}
+	
+	function update($new_instance, $old_instance) {
+		$instance = $old_instance;
+		$instance['page_id'] = strip_tags($new_instance['page_id']);
+		$instance['title'] = strip_tags($new_instance['title']);
+		return $instance;
+	}
+
+	function form($instance) {
+		$default = 	array( 'title' => __('Page Excerpt Widget') );
+		$instance = wp_parse_args( (array) $instance, $default );
+		$page_id = $this->get_field_name('page_id');
+		_e("Page to display: " );
+			?>
+			<select name="<?php echo $page_id; ?>">
+				<?php
+					$pages = get_pages();
+					foreach ($pages as $page){
+						if ($page->ID == $instance['page_id']){
+							$selected = 'selected="selected"';
+						}
+						else {
+							$selected='';
+						}
+						echo '<option value="'
+							.$page->ID.'"'
+							.$selected.'>'
+							.$page->post_title
+							.'</option>';
+					};
+				?>
+			</select>
+		<?php
+		$field_name = $this->get_field_name('display_title');
+		echo "\r\n"
+			.'<p><label for="'
+			.$field_id
+			.'">'
+			.__('Page')
+			.': <input type="text" class="widefat" id="'
+			.$field_id
+			.'" name="'
+			.$field_name
+			.'" value="'
+			.esc_attr( $instance['title'] )
+			.'" /><label></p>';
+	}
+	
+	function temmp2($instance) {
+		// if the text is longer than the length it is supposed to be
+		if (strlen($text) > $length){
+			// trim to length
+			$text = substr($text, 0, $length);
+			// find last whitespace in string
+			$last_whitespace = strrpos($text, ' ');
+			// trim to last whitespace in string
+			$text = substr($text, 0, $last_whitespace);
+			// append dots
+			$text .=' [...]';
+			return $text;
+		}
+		// if the text is shorter than the trim limit, pass it on
+		else {
+			return $text;
+		}
+	}
+	
+/* class end */
+}
+}
+
+add_action('widgets_init', 'page_excerpt_widgets');
+
+function page_excerpt_widgets(){
+	register_widget('PageExcerptWidget');
+}
 
 function jmh_pew_trim($text, $length) {
 	// if the text is longer than the length it is supposed to be
@@ -94,6 +228,7 @@ if (isset($after_widget)){
 	echo $after_widget;
 }
 }
+/*
 	wp_register_sidebar_widget( 1, 'Page Excerpt Widget',
 	'jmh_pew_widget');
 	wp_register_widget_control( 1, 'Page Excerpt Widget',
