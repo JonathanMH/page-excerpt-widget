@@ -57,7 +57,7 @@ class PageExcerptWidget extends WP_Widget {
 		if (!empty($title)) {
 			echo $before_title . $title . $after_title;
 		};
-		echo $this->pew_trim($page_data->post_content, 100);
+		echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
 			
 		echo '<pre>';
 		print_r($page_data);
@@ -69,12 +69,12 @@ class PageExcerptWidget extends WP_Widget {
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['page_id'] = strip_tags($new_instance['page_id']);
-		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['excerpt_length'] = strip_tags($new_instance['excerpt_length']);
 		return $instance;
 	}
 
 	function form($instance) {
-		$default = 	array( 'title' => __('Page Excerpt Widget') );
+		$default = 	array( 'title' => __('Page Excerpt Widget'), 'excerpt_length' => __(500) );
 		$instance = wp_parse_args( (array) $instance, $default );
 		$page_id = $this->get_field_name('page_id');
 		_e("Page to display: " );
@@ -98,18 +98,19 @@ class PageExcerptWidget extends WP_Widget {
 				?>
 			</select>
 		<?php
-		$field_name = $this->get_field_name('display_title');
+		$field_excerpt_length_id = $this->get_field_id('excerpt_length');
+		$field_excerpt_length = $this->get_field_name('excerpt_length');
 		echo "\r\n"
 			.'<p><label for="'
 			.$field_id
 			.'">'
-			.__('Page')
-			.': <input type="text" class="widefat" id="'
-			.$field_id
+			.__('Excerpt Length')
+			.': <input type="text" id="'
+			.$field_excerpt_length_id
 			.'" name="'
-			.$field_name
+			.$field_excerpt_length
 			.'" value="'
-			.esc_attr( $instance['title'] )
+			.esc_attr( $instance['excerpt_length'] )
 			.'" /><label></p>';
 	}
 	
