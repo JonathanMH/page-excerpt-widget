@@ -36,7 +36,7 @@ class PageExcerptWidget extends WP_Widget {
 			// trim to last whitespace in string
 			$text = substr($text, 0, $last_whitespace);
 			// append dots
-			//$text .=' [...]';
+			$text .=' [...]';
 			return $text;
 		}
 		// if the text is shorter than the trim limit, pass it on
@@ -61,10 +61,12 @@ class PageExcerptWidget extends WP_Widget {
 			echo $after_title;
 		};
 		echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
-			
-		echo '<pre>';
-		print_r($page_data);
-		echo '</pre>';
+		
+		/* debugging
+			echo '<pre>';
+			print_r($page_data);
+			echo '</pre>';
+		*/
 		echo $after_widget;
 		
 	}
@@ -129,17 +131,17 @@ class PageExcerptWidget extends WP_Widget {
 		}
 		
 		echo "\r\n"
-			.'<p><label for="'
-			.$field_display_title_id
-			.'">'
-			.__('Display Page Title')
-			.': </label><input type="checkbox" id="'
+			.'<p><input type="checkbox" id="'
 			.$field_display_title_id
 			.'" name="'
 			.$field_display_title
 			.'" value="on"'
 			.$checked
-			.'/></p>';
+			.'/> <label for="'
+			.$field_display_title_id
+			.'">'
+			.__('Display Page Title')
+			.': </label></p>';
 		
 		$field_link_title_id = $this->get_field_id('link_title');
 		$field_link_title = $this->get_field_name('link_title');
@@ -153,17 +155,17 @@ class PageExcerptWidget extends WP_Widget {
 		}
 		
 		echo "\r\n"
-			.'<p><label for="'
-			.$field_link_title_id
-			.'">'
-			.__('Link Page Title')
-			.': </label><input type="checkbox" id="'
+			.'<p><input type="checkbox" id="'
 			.$field_link_title_id
 			.'" name="'
 			.$field_link_title
 			.'" value="on"'
 			.$checked
-			.'/></p>';
+			.'/> <label for="'
+			.$field_link_title_id
+			.'">'
+			.__('Link Page Title')
+			.': </label></p>';
 	}
 	
 /* class end */
