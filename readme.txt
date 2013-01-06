@@ -22,10 +22,10 @@ Right now you can:
 * Link the title of the page, to the page
 * Append a link to the page
 * Decide a custom label for the read more link
+* add multiple instances of the widget
 
 I plan to increase the functionality with:
 
-* the possibility for multiple instances of the widget
 * some internationalisation
 
 == Installation ==
