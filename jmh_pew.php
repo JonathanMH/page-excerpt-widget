@@ -4,7 +4,7 @@
 	Plugin URI: http://jonathanmh.com/wordpress-page-excerpt-widget/
 	Description: Plugin for displaying a page excerpt in a widget area
 	Author: Jonathan M. Hethey
-	Version: 0.2
+	Version: 0.3
 	Author URI: http://jonathanmh.com
 */
 
@@ -53,7 +53,7 @@ class PageExcerptWidget extends WP_Widget {
 		if (!empty($title) && $instance['display_title'] == 'on') {
 			echo $before_title;
 			if ($instance['link_title']){
-				echo '<a href="'. $permalink .'">'. $title . '</a>';
+				echo '<a class="jmh_pew_title" href="'. $permalink .'">'. $title . '</a>';
 			}
 			else {
 				echo $title;
@@ -69,7 +69,7 @@ class PageExcerptWidget extends WP_Widget {
 		}
 		echo '</p>';
 		if ($instance['display_read_more'] == 'on'){
-			echo ' <a href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
+			echo ' <a class="jmh_pew_readmore" href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
 		}
 		
 		/* debugging
