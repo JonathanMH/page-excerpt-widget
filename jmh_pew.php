@@ -61,15 +61,18 @@ class PageExcerptWidget extends WP_Widget {
 			echo $after_title;
 		};
 			
-		echo '<p>';
-		echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
-		
-		if ($instance['dot_excerpt'] == 'on'){
-			echo ' [...]';
-		}
-		echo '</p>';
-		if ($instance['display_read_more'] == 'on'){
-			echo ' <a class="jmh_pew_readmore" href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
+		if ($instance['excerpt_length']) {
+			echo '<p>';
+				echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
+			if ($instance['dot_excerpt'] == 'on'){
+				echo ' [...]';
+			}
+			echo '</p>';
+			if ($instance['display_read_more'] == 'on'){
+				echo ' <a href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
+			}
+		} else {
+			echo apply_filters('the_content', $page_data->post_content);
 		}
 		
 		/* debugging
