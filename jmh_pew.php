@@ -3,8 +3,8 @@
 	Plugin Name: Page Excerpt Widget
 	Plugin URI: http://jonathanmh.com/wordpress-page-excerpt-widget/
 	Description: Plugin for displaying a page excerpt in a widget area
-	Author: Jonathan M. Hethey
-	Version: 0.3
+	Author: Jonathan M. Hethey, David Comuñas
+	Version: 0.4
 	Author URI: http://jonathanmh.com
 */
 
@@ -60,16 +60,28 @@ class PageExcerptWidget extends WP_Widget {
 			}
 			echo $after_title;
 		};
+		
+		if ($instance['enable_p_tags'] == 'on'){
+			echo '<p>';
+		}
 			
-		echo '<p>';
-		echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
+		$trimmed_content = $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
+		if ($instance['enable_apply_filters'] == 'on'){
+			echo apply_filters('the_content', $trimmed_content);
+		} else {
+			echo $trimmed_content;
+		}
 		
 		if ($instance['dot_excerpt'] == 'on'){
-			echo ' [...]';
+			echo ' <span class="jmhpew_dot_excerpt">[...]</span>';
 		}
-		echo '</p>';
+		
+		if ($instance['enable_p_tags'] == 'on'){
+			echo '</p>';
+		}
+
 		if ($instance['display_read_more'] == 'on'){
-			echo ' <a class="jmh_pew_readmore" href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
+			echo '<p class="jmh_pew_readmore"><a class="jmh_pew_readmore" href="'. $permalink .'">'. $instance['read_more_label'] .'</a></p>';
 		}
 		
 		/* debugging
@@ -89,6 +101,8 @@ class PageExcerptWidget extends WP_Widget {
 		$instance['display_title'] = strip_tags($new_instance['display_title']);
 		$instance['link_title'] = strip_tags($new_instance['link_title']);
 		$instance['display_read_more'] = strip_tags($new_instance['display_read_more']);
+		$instance['enable_apply_filters'] = strip_tags($new_instance['enable_apply_filters']);
+		$instance['enable_p_tags'] = strip_tags($new_instance['enable_p_tags']);
 		$instance['read_more_label'] = strip_tags($new_instance['read_more_label']);
 		return $instance;
 	}
@@ -100,6 +114,8 @@ class PageExcerptWidget extends WP_Widget {
 			, 'dot_excerpt'			=> 'on'
 			, 'display_title'		=> 'on'
 			, 'display_read_more'	=> 'on'
+			, 'enable_apply_filters'	=> 'off'
+			, 'enable_p_tags'	=> 'on'
 			, 'read_more_label'		=> 'read full page'
 						 );
 		$instance = wp_parse_args( (array) $instance, $default );
@@ -249,6 +265,52 @@ class PageExcerptWidget extends WP_Widget {
 			.esc_attr( $instance['read_more_label'] ).'"'
 			.'placeholder="read full page"'
 			.'/></p>';
+		
+		$field_enable_apply_filters_id = $this->get_field_id('enable_apply_filters');
+		$field_enable_apply_filters = $this->get_field_name('enable_apply_filters');
+		
+		if ($instance['enable_apply_filters'] == 'on'){
+			$checked = 'checked="checked"';
+		}
+		else {
+			$checked = '';
+		}
+		
+		echo "\r\n"
+			.'<p><input type="checkbox" id="'
+			.$field_enable_apply_filters_id
+			.'" name="'
+			.$field_enable_apply_filters
+			.'" value="on"'
+			.$checked
+			.'/> <label for="'
+			.$field_enable_apply_filters_id
+			.'">'
+			.__('Apply Wordpress filters to the content')
+			.' </label></p>';
+		
+		$field_enable_p_tags_id = $this->get_field_id('enable_p_tags');
+		$field_enable_p_tags = $this->get_field_name('enable_p_tags');
+		
+		if ($instance['enable_p_tags'] == 'on'){
+			$checked = 'checked="checked"';
+		}
+		else {
+			$checked = '';
+		}
+		
+		echo "\r\n"
+			.'<p><input type="checkbox" id="'
+			.$field_enable_p_tags_id
+			.'" name="'
+			.$field_enable_p_tags
+			.'" value="on"'
+			.$checked
+			.'/> <label for="'
+			.$field_enable_p_tags_id
+			.'">'
+			.__('Enable "p" tags around content')
+			.' </label></p>';
 		
 		
 	}
