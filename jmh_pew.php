@@ -15,7 +15,7 @@ class PageExcerptWidget extends WP_Widget {
 	/*
 	* construct
 	*/
-	
+
 	function PageExcerptWidget() {
 		parent::WP_Widget(
 			'PageExcerptWidget'
@@ -25,7 +25,7 @@ class PageExcerptWidget extends WP_Widget {
 			)
 		);
 	}
-	
+
 	function pew_trim($text, $length) {
 		// if the text is longer than the length it is supposed to be
 		if (strlen($text) > $length){
@@ -43,7 +43,7 @@ class PageExcerptWidget extends WP_Widget {
 			return $text;
 		}
 	}
-	
+
 	function widget($args, $instance) {
 		extract($args, EXTR_SKIP);
 		echo $before_widget;
@@ -60,10 +60,10 @@ class PageExcerptWidget extends WP_Widget {
 			}
 			echo $after_title;
 		};
-			
+
 		echo '<p>';
 		echo $this->pew_trim($page_data->post_content, $instance['excerpt_length']);
-		
+
 		if ($instance['dot_excerpt'] == 'on'){
 			echo ' [...]';
 		}
@@ -71,16 +71,11 @@ class PageExcerptWidget extends WP_Widget {
 		if ($instance['display_read_more'] == 'on'){
 			echo ' <a class="jmh_pew_readmore" href="'. $permalink .'">'. $instance['read_more_label'] .'</a>';
 		}
-		
-		/* debugging
-			echo '<pre>';
-			print_r($page_data);
-			echo '</pre>';
-		*/
+
 		echo $after_widget;
-		
+
 	}
-	
+
 	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['page_id'] = strip_tags($new_instance['page_id']);
@@ -140,17 +135,17 @@ class PageExcerptWidget extends WP_Widget {
 			.'" value="'
 			.esc_attr( $instance['excerpt_length'] )
 			.'" /></p>';
-		
+
 		$field_dot_excerpt_id = $this->get_field_id('dot_excerpt');
 		$field_dot_excerpt = $this->get_field_name('dot_excerpt');
-		
+
 		if ($instance['dot_excerpt'] == 'on'){
 			$checked = 'checked="checked"';
 		}
 		else {
 			$checked = '';
 		}
-		
+
 		echo "\r\n"
 			.'<p><input type="checkbox" id="'
 			.$field_dot_excerpt_id
@@ -163,18 +158,18 @@ class PageExcerptWidget extends WP_Widget {
 			.'">'
 			.__('Show dots after excerpt `[...]`')
 			.' </label></p>';
-		
+
 		$field_display_title_id = $this->get_field_id('display_title');
 		$field_display_title = $this->get_field_name('display_title');
-		
-		
+
+
 		if ($instance['display_title'] == 'on'){
 			$checked = 'checked="checked"';
 		}
 		else {
 			$checked = '';
 		}
-		
+
 		echo "\r\n"
 			.'<p><input type="checkbox" id="'
 			.$field_display_title_id
@@ -187,17 +182,17 @@ class PageExcerptWidget extends WP_Widget {
 			.'">'
 			.__('Display Page Title')
 			.' </label></p>';
-		
+
 		$field_link_title_id = $this->get_field_id('link_title');
 		$field_link_title = $this->get_field_name('link_title');
-		
+
 		if ($instance['link_title'] == 'on'){
 			$checked = 'checked="checked"';
 		}
 		else {
 			$checked = '';
 		}
-		
+
 		echo "\r\n"
 			.'<p><input type="checkbox" id="'
 			.$field_link_title_id
@@ -210,17 +205,17 @@ class PageExcerptWidget extends WP_Widget {
 			.'">'
 			.__('Link Page Title')
 			.' </label></p>';
-		
+
 		$field_display_read_more_id = $this->get_field_id('display_read_more');
 		$field_display_read_more = $this->get_field_name('display_read_more');
-		
+
 		if ($instance['display_read_more'] == 'on'){
 			$checked = 'checked="checked"';
 		}
 		else {
 			$checked = '';
 		}
-		
+
 		echo "\r\n"
 			.'<p><input type="checkbox" id="'
 			.$field_display_read_more_id
@@ -233,7 +228,7 @@ class PageExcerptWidget extends WP_Widget {
 			.'">'
 			.__('Display Read More Link')
 			.' </label></p>';
-		
+
 		$field_read_more_label_id = $this->get_field_id('read_more_label');
 		$field_read_more_label = $this->get_field_name('read_more_label');
 		echo "\r\n"
@@ -249,18 +244,16 @@ class PageExcerptWidget extends WP_Widget {
 			.esc_attr( $instance['read_more_label'] ).'"'
 			.'placeholder="read full page"'
 			.'/></p>';
-		
-		
 	}
-	
+
 /* class end */
 }
 }
 
 add_action('widgets_init', 'page_excerpt_widgets');
 
-function page_excerpt_widgets(){
-	register_widget('PageExcerptWidget');
-}
+	function page_excerpt_widgets(){
+		register_widget('PageExcerptWidget');
+	}
 
 ?>
